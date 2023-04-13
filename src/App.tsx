@@ -2,7 +2,8 @@ import "./App.css";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { addTodo, addTimeStamp } from "./slices/todo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useGetTodoListQuery, useGetPostListQuery } from "./services/todoApi";
 
 const Wrapper = styled.div`
     text-align: center;
@@ -61,6 +62,13 @@ function App() {
 
     const dispatch = useAppDispatch();
 
+    const { data, error, isLoading } = useGetTodoListQuery('1');
+    // console.log('data :>> ', data);
+    // console.log('error :>> ', error);
+    // console.log('isLoading :>> ', isLoading);
+
+    const { userId = 'N/A', title = 'N/A' } = data || {};
+
     return (
         <Wrapper>
             <Title>TO DO LIST</Title>
@@ -74,12 +82,12 @@ function App() {
             />
             <SubmitBtn
                 onClick={() => {
-                    if(text === ""){
+                    if (text === "") {
                         alert("Please enter a note");
                         return;
                     }
                     dispatch(addTodo(text));
-                    setText("")
+                    setText("");
                 }}
             >
                 Submit
@@ -100,6 +108,14 @@ function App() {
                     </Item>
                 );
             })}
+            <Title>Fetch Api List</Title>
+            { isLoading && <p>Loading...</p> }
+            { !isLoading && 
+                <div>
+                    <p>USER ID: {data?.userId}</p>
+                    <p>TITLE: {data?.title}</p>
+                </div>
+            }
         </Wrapper>
     );
 }

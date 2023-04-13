@@ -5,26 +5,26 @@ import { RootState } from "./store";
 
 export const logger: Middleware<{}, RootState> = (store) => (next) => (action) => {
     //dispatch 時要執行的動作
-    console.log("dispatching", action);
+    // console.log("dispatching", action);
     let result = next(action);
     //dispatch 後要執行的動作
-    console.log("next state", store.getState());
+    // console.log("next state", store.getState());
     return result;
 };
 
 export const customMiddleware: Middleware<{}, RootState> = (store) => (next) => (action) => {
-    console.log("custom dispatching")
+    // console.log("custom dispatching")
     let result = next(action);
-    console.log("after custom dispatching")
+    // console.log("after custom dispatching")
     return result;
 }
 
 //error handling middleware
 export const crashReporter: Middleware<{}, RootState> = (store) => (next) => (action) => {
     try {
-        console.log("crashReporter dispatching")
+        // console.log("crashReporter dispatching")
         let result = next(action)
-        console.log("crashReporter next state", store.getState())
+        // console.log("crashReporter next state", store.getState())
         return result;
     } catch (err) {
         console.error("Caught an exception!", err);
